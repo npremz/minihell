@@ -6,7 +6,7 @@
 /*   By: npremont <npremont@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/06 10:49:05 by npremont          #+#    #+#             */
-/*   Updated: 2024/02/06 15:06:12 by npremont         ###   ########.fr       */
+/*   Updated: 2024/02/07 22:05:59 by npremont         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,10 @@ int	main(int argc, char **argv, char **envp)
 			free(line);
 			break ;
 		}
+		if (ft_strncmp(line, "env", 3) == 0)
+			ft_env(en);
+		if (ft_strncmp(line, "pwd", 3) == 0)
+			ft_pwd();
 		if (ft_strncmp(line, "cd", 2) == 0)
 		{
 			test_cd = ft_split(line, ' ');
@@ -43,6 +47,13 @@ int	main(int argc, char **argv, char **envp)
 			ft_export(test_cd, &en);
 			ft_free_split(test_cd);
 		}
+		if (ft_strncmp(line, "unset", 5) == 0)
+		{
+			test_cd = ft_split(line, ' ');
+			ft_unset(test_cd, &en);
+			ft_free_split(test_cd);
+		}
 	}
+	ft_envclear(&en, free_globvar);
 	return (0);
 }

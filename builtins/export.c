@@ -6,7 +6,7 @@
 /*   By: npremont <npremont@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/06 15:03:52 by npremont          #+#    #+#             */
-/*   Updated: 2024/02/06 18:56:22 by npremont         ###   ########.fr       */
+/*   Updated: 2024/02/07 23:09:40 by npremont         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,15 +34,28 @@ static int	get_input_type(char *arg)
 		return (3);
 }
 
-int	add_content_to_var(t_globvar *tmp, t_globvar *var)
+int	add_content_to_var(t_list **en, t_globvar *tmp, t_globvar *var)
 {
 	char	*tmp_str;
+	t_list	*new;
 
-	tmp_str = tmp->value;
-	free(tmp->value);
-	tmp->value = ft_strjoin(tmp_str, var->value);
-	if (!tmp->value)
-		return (EXIT_FAILURE);
+	if (tmp)
+	{
+		tmp_str = tmp->value;
+		tmp->value = ft_strjoin(tmp->value, var->value);
+		free(tmp_str);
+		free_globvar(var);
+		if (!tmp->value)
+			return (EXIT_FAILURE);
+	}
+	else
+	{
+		var->is_secret = 0;
+		new = ft_lstnew(var);
+		if (!new)
+			return (EXIT_FAILURE);
+		ft_lstadd_back(en, new);
+	}
 	return (EXIT_SUCCESS);
 }
 
@@ -56,8 +69,8 @@ int	update_var(t_list **en, t_globvar *tmp, t_globvar *var, int type)
 		{
 			free(tmp->value);
 			tmp->value = var->value;
+			free(var->name);
 		}
-		return (EXIT_SUCCESS);
 	}
 	else
 	{
@@ -76,21 +89,23 @@ int	update_var(t_list **en, t_globvar *tmp, t_globvar *var, int type)
 int	ft_export_var(int type, t_list *en, t_globvar *var)
 {
 	t_globvar	*tmp;
+	t_list		*en_start;
 
 	tmp = NULL;
+	en_start = en;
 	while (en)
 	{
 		tmp = en->content;
-		if (ft_strncmp(var->name, tmp->name, ft_strlen(tmp->name)) == 0)
+		if (ft_strncmp(var->name, tmp->name, ft_strlen(var->name)) == 0)
 			break ;
 		else
 			tmp = NULL;
 		en = en->next;
 	}
-	if (type == 1 && tmp)
-		return (add_content_to_var(tmp, var));
+	if (type == 1)
+		return (add_content_to_var(&en_start, tmp, var));
 	if (type == 2 || type == 3)
-		return (update_var(&en, tmp, var, type));
+		return (update_var(&en_start, tmp, var, type));
 	return (EXIT_FAILURE);
 }
 
@@ -99,9 +114,10 @@ int	ft_export(char **args, t_list **en)
 	size_t		i;
 	int			type;
 	t_globvar	*var;
+	char		*plus_char;
 
 	if (!args[1])
-		return (EXIT_SUCCESS);
+		return (ft_print_secret(*en), EXIT_SUCCESS);
 	i = 1;
 	while (args[i])
 	{
@@ -111,9 +127,11 @@ int	ft_export(char **args, t_list **en)
 			return (EXIT_FAILURE);
 		if (ft_get_globvar(args[i], &var) == 0)
 			return (free(var), EXIT_FAILURE);
+		plus_char = ft_strchr(var->name, '+');
+		if (plus_char)
+			*plus_char = '\0';
 		if (ft_export_var(type, *en, var) == 1)
-			return (free_globvar((void *)var), EXIT_FAILURE);
-		free_globvar((void *)var);
+			return (free_globvar(var), EXIT_FAILURE);
 		++i;
 	}
 	return (EXIT_SUCCESS);

@@ -1,36 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   free.c                                             :+:      :+:    :+:   */
+/*   pwd.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: npremont <npremont@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/02/06 11:08:18 by npremont          #+#    #+#             */
-/*   Updated: 2024/02/07 16:33:34 by npremont         ###   ########.fr       */
+/*   Created: 2024/02/07 16:29:19 by npremont          #+#    #+#             */
+/*   Updated: 2024/02/07 16:30:53 by npremont         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	free_globvar(t_globvar *ptr)
+int	ft_pwd(void)
 {
-	if ((ptr)->name)
-		ft_free((void **)&((ptr)->name));
-	if ((ptr)->value)
-		ft_free((void **)&((ptr)->value));
-	if ((ptr))
-		ft_free((void **)&ptr);
-}
+	char	cwd[1024];
 
-void	ft_envclear(t_list **lst, void (*del)(t_globvar *))
-{
-	t_list	*temp;
-
-	while (*lst != NULL)
+	if (getcwd(cwd, 1024))
 	{
-		(*del)((*lst)->content);
-		temp = (*lst)->next;
-		free(*lst);
-		*lst = temp;
+		printf("%s\n", cwd);
+		return (EXIT_SUCCESS);
 	}
+	else
+		return (EXIT_FAILURE);
 }

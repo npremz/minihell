@@ -2,13 +2,14 @@ NAME = minishell
 
 HEADER = ./includes/
 
-SOURCES = main.c env.c error.c free.c builtins/cd.c builtins/export.c
+SOURCES = main.c env_init.c error.c free.c \
+		builtins/cd.c builtins/export.c builtins/env.c builtins/pwd.c builtins/unset.c
 
 OBJECTS = $(SOURCES:.c=.o)
 
 LIB = libft.a
 
-GCC_FLAGS = -Wall -Wextra -Werror
+GCC_FLAGS = -Wall -Wextra -Werror -fsanitize=address -g
 
 CC = cc
 
@@ -31,7 +32,7 @@ $(NAME): $(OBJECTS) $(LIB)
 	@echo "\033[0m"
 	@make usage
 
-$(OBJECTS): $(SOURCES)
+%.o: %.c
 	@$(CC) $(GCC_FLAGS) -c -I $(HEADER) ${@:.o=.c} -o $@
 
 $(LIB):

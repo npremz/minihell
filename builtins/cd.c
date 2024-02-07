@@ -6,7 +6,7 @@
 /*   By: npremont <npremont@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/06 14:05:06 by npremont          #+#    #+#             */
-/*   Updated: 2024/02/06 18:34:52 by npremont         ###   ########.fr       */
+/*   Updated: 2024/02/07 17:06:42 by npremont         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,25 +19,24 @@ int	update_env(t_list *en, char act_pwd[1024])
 	var = malloc(sizeof(t_globvar));
 	if (!var)
 		return (EXIT_FAILURE);
-	var->name = ft_strdup("PWD");
-	if (!var->name)
-		return (free(var), EXIT_FAILURE);
-	var->value = ft_strdup(act_pwd);
-	if (!var->value)
-		return (free_globvar((void *)var), EXIT_FAILURE);
-	if (ft_export_var(2, en, var) == 1)
-		return (free_globvar((void *)var), EXIT_FAILURE);
-	ft_free((void **)&var->name);
-	ft_free((void **)&var->value);
-	getcwd(act_pwd, 1024);
 	var->name = ft_strdup("OLDPWD");
 	if (!var->name)
 		return (free(var), EXIT_FAILURE);
 	var->value = ft_strdup(act_pwd);
 	if (!var->value)
-		return (free_globvar((void *)var), EXIT_FAILURE);
+		return (free_globvar(var), EXIT_FAILURE);
 	if (ft_export_var(2, en, var) == 1)
-		return (free_globvar((void *)var), EXIT_FAILURE);
+		return (free_globvar(var), EXIT_FAILURE);
+	getcwd(act_pwd, 1024);
+	var->name = ft_strdup("PWD");
+	if (!var->name)
+		return (free(var), EXIT_FAILURE);
+	var->value = ft_strdup(act_pwd);
+	if (!var->value)
+		return (free_globvar(var), EXIT_FAILURE);
+	if (ft_export_var(2, en, var) == 1)
+		return (free_globvar(var), EXIT_FAILURE);
+	free(var);
 	return (EXIT_SUCCESS);
 }
 
@@ -62,10 +61,12 @@ int	ft_go_to_path(char *str, t_list *en, char act_pwd[1024])
 
 	path = ft_get_var_value(str, en);
 	if (!path)
-		return (print_error("cd: "), print_error(str),
-			print_error("not set.\n"), EXIT_FAILURE);
+		return (print_error("cd: « "), print_error(str),
+			print_error(" » not set.\n"), EXIT_FAILURE);
+	if (ft_strncmp("OLDPWD", str, 6) == 0)
+		printf("%s\n", path);
 	if (chdir(path) == -1)
-		return (EXIT_FAILURE);
+		return (perror("cd"), EXIT_FAILURE);
 	else
 	{
 		if (update_env(en, act_pwd) == 1)
@@ -82,13 +83,14 @@ int	ft_tilde(t_list *en, char *str, char act_pwd[1024])
 	home = ft_get_var_value("HOME", en);
 	if (!home)
 		home = getenv("HOME");
-	dest = ft_strjoin(home, str);
+	dest = ft_strjoin(home, str + 1);
 	if (!dest)
 		return (EXIT_FAILURE);
 	if (chdir(dest) == -1)
-		return (free(dest), EXIT_FAILURE);
+		return (free(dest), perror("cd"), EXIT_FAILURE);
 	else
 	{
+		free(dest);
 		if (update_env(en, act_pwd) == 1)
 			return (EXIT_FAILURE);
 		return (EXIT_SUCCESS);
@@ -104,7 +106,7 @@ int	ft_cd(char **args, t_list **en)
 		return (ft_go_to_path("HOME", *en, act_pwd));
 	else if (args[1][0] == '-' && !args[1][1])
 		return (ft_go_to_path("OLDPWD", *en, act_pwd));
-	else if (args[0][0] == '~')
+	else if (args[1][0] == '~')
 		return (ft_tilde(*en, args[1], act_pwd));
 	if (chdir(args[1]) == -1)
 		return (perror("cd"), EXIT_FAILURE);
