@@ -6,7 +6,7 @@
 /*   By: npremont <npremont@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/08 16:48:21 by npremont          #+#    #+#             */
-/*   Updated: 2024/02/08 18:09:37 by npremont         ###   ########.fr       */
+/*   Updated: 2024/02/08 18:53:05 by npremont         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,7 +92,7 @@ char	**ft_en_to_tab(t_list *en)
 	{
 		var = en->content;
 		ft_strlcat(str, var->name, len);
-		if ((var->value)[0])
+		if (!(var->is_secret))
 			ft_strlcat(str, "=", len);
 		ft_strlcat(str, var->value, len);
 		ft_strlcat(str, "\n", len);
