@@ -6,7 +6,7 @@
 /*   By: npremont <npremont@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/06 10:52:04 by npremont          #+#    #+#             */
-/*   Updated: 2024/02/07 23:21:24 by npremont         ###   ########.fr       */
+/*   Updated: 2024/02/08 17:41:48 by npremont         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,12 +25,7 @@
 
 /* STRUCTURES */
 
-typedef struct s_globvar
-{
-	char	*name;
-	char	*value;
-	int		is_secret;
-}	t_globvar;
+
 
 /* BUILTINS */
 
@@ -40,10 +35,15 @@ int		ft_export_var(int type, t_list *en, t_globvar *var);
 int		ft_env(t_list *en);
 int		ft_pwd(void);
 int		ft_unset(char **args, t_list **en);
+int		ft_echo(char **args);
 
 void	ft_envinit(t_list **en, char **envp);
 int		ft_get_globvar(char *varline, t_globvar **var);
-void	ft_print_secret(t_list *en);
+int		ft_print_secret(t_list *en);
+char	**ft_en_to_tab(t_list *en);
+void	ft_print_export(char **en);
+char	*ft_get_varname(char *varline);
+char	*ft_get_varvalue(char *varline);
 
 /* FREE UTILS */
 

@@ -6,7 +6,7 @@
 /*   By: npremont <npremont@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/06 15:03:52 by npremont          #+#    #+#             */
-/*   Updated: 2024/02/07 23:09:40 by npremont         ###   ########.fr       */
+/*   Updated: 2024/02/08 16:19:07 by npremont         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,7 +117,7 @@ int	ft_export(char **args, t_list **en)
 	char		*plus_char;
 
 	if (!args[1])
-		return (ft_print_secret(*en), EXIT_SUCCESS);
+		return (ft_print_secret(*en));
 	i = 1;
 	while (args[i])
 	{

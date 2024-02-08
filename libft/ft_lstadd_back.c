@@ -6,7 +6,7 @@
 /*   By: npremont <npremont@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/16 16:06:37 by npremont          #+#    #+#             */
-/*   Updated: 2023/10/18 11:04:43 by npremont         ###   ########.fr       */
+/*   Updated: 2024/02/08 15:44:22 by npremont         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,16 @@
 
 void	ft_lstadd_back(t_list **lst, t_list *new)
 {
+	static t_list	*last;
+
 	if (*lst)
-		ft_lstlast(*lst)->next = new;
+	{
+		last->next = new;
+		last = new;
+	}
 	else
+	{
 		*lst = new;
+		last = new;
+	}
 }

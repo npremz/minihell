@@ -6,7 +6,7 @@
 /*   By: npremont <npremont@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/06 10:49:05 by npremont          #+#    #+#             */
-/*   Updated: 2024/02/07 22:05:59 by npremont         ###   ########.fr       */
+/*   Updated: 2024/02/08 15:44:51 by npremont         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@ int	main(int argc, char **argv, char **envp)
 	(void)argc;
 	(void)argv;
 	(void)line;
+	en = NULL;
 	ft_envinit(&en, envp);
 	while (1)
 	{
@@ -39,6 +40,12 @@ int	main(int argc, char **argv, char **envp)
 		{
 			test_cd = ft_split(line, ' ');
 			ft_cd(test_cd, &en);
+			ft_free_split(test_cd);
+		}
+		if (ft_strncmp(line, "echo", 4) == 0)
+		{
+			test_cd = ft_split(line, ' ');
+			ft_echo(test_cd);
 			ft_free_split(test_cd);
 		}
 		if (ft_strncmp(line, "export", 6) == 0)
