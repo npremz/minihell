@@ -6,7 +6,7 @@
 /*   By: npremont <npremont@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/08 16:48:21 by npremont          #+#    #+#             */
-/*   Updated: 2024/02/08 18:53:05 by npremont         ###   ########.fr       */
+/*   Updated: 2024/02/09 11:36:08 by npremont         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,6 +101,7 @@ char	**ft_en_to_tab(t_list *en)
 	res = ft_split(str, '\n');
 	if (!res)
 		return (NULL);
+	free(str);
 	return (res);
 }
 
