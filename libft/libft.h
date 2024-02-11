@@ -6,7 +6,7 @@
 /*   By: npremont <npremont@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 14:00:38 by npremont          #+#    #+#             */
-/*   Updated: 2024/02/08 15:40:21 by npremont         ###   ########.fr       */
+/*   Updated: 2024/02/10 11:48:08 by npremont         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,13 +24,6 @@
 # endif
 
 /* STRUCTURES */
-
-typedef struct s_globvar
-{
-	char	*name;
-	char	*value;
-	int		is_secret;
-}	t_globvar;
 
 typedef struct s_list
 {

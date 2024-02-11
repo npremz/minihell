@@ -3,7 +3,8 @@ NAME = minishell
 HEADER = ./includes/
 
 SOURCES = main.c env_init.c env_utils.c error.c free.c \
-		builtins/cd.c builtins/export.c builtins/env.c builtins/pwd.c builtins/unset.c builtins/echo.c
+		builtins/cd.c builtins/export.c builtins/env.c builtins/pwd.c \
+		builtins/unset.c builtins/echo.c builtins/exit.c
 
 OBJECTS = $(SOURCES:.c=.o)
 

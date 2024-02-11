@@ -6,7 +6,7 @@
 /*   By: npremont <npremont@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/06 10:58:51 by npremont          #+#    #+#             */
-/*   Updated: 2024/02/08 17:43:24 by npremont         ###   ########.fr       */
+/*   Updated: 2024/02/10 12:15:19 by npremont         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,18 +58,18 @@ void	ft_envinit(t_list **en, char **envp)
 	var = NULL;
 	new_node = NULL;
 	if (!envp)
-		exit_error("Error: Initialisation failed.\n", en, var, EXIT_FAILURE);
+		exit_error("Error: Init failed.\n", en, var, EXIT_FAILURE);
 	while (envp[i])
 	{
 		var = malloc(sizeof(t_globvar));
 		if (!var)
-			exit_error("Error: Initialisation failed.\n", en, var, EXIT_FAILURE);
+			exit_error("Error: Init failed.\n", en, var, EXIT_FAILURE);
 		if (ft_get_globvar(envp[i], &var) == 0)
-			exit_error("Error: Initialisation failed.\n", en, var, EXIT_FAILURE);
+			exit_error("Error: Init failed.\n", en, var, EXIT_FAILURE);
 		new_node = ft_lstnew(var);
 		var->is_secret = 0;
 		if (!new_node)
-			exit_error("Error: Initialisation failed.\n", en, var, EXIT_FAILURE);
+			exit_error("Error: Init failed.\n", en, var, EXIT_FAILURE);
 		ft_lstadd_back(en, new_node);
 		++i;
 	}
