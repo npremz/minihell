@@ -6,11 +6,57 @@
 /*   By: npremont <npremont@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/06 10:58:51 by npremont          #+#    #+#             */
-/*   Updated: 2024/02/10 12:15:19 by npremont         ###   ########.fr       */
+/*   Updated: 2024/02/12 11:11:22 by npremont         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+int	ft_initshlvl(t_list *en)
+{
+	t_globvar	*var;
+	char		*shlvl;
+	int			lvl;
+
+	var = malloc(sizeof(t_globvar));
+	if (!var)
+		return (EXIT_FAILURE);
+	var->name = ft_strdup("SHLVL");
+	if (!var->name)
+		return (free(var), EXIT_FAILURE);
+	shlvl = ft_get_gvar_value("SHLVL", en);
+	if (!shlvl)
+		lvl = 1;
+	else
+	{
+		lvl = ft_atoi(shlvl) + 1;
+		if (lvl < 0)
+			lvl = 0;
+	}
+	var->value = ft_itoa(lvl);
+	if (!var->value)
+		return (free(var->name), free(var), EXIT_FAILURE);
+	return (ft_export_var(2, en, var));
+}
+
+int	ft_initpwd(t_list *en)
+{
+	t_globvar	*var;
+	char		pwd[1024];
+
+	if (!getcwd(pwd, sizeof(pwd)))
+		return (EXIT_FAILURE);
+	var = malloc(sizeof(t_globvar));
+	if (!var)
+		return (EXIT_FAILURE); 
+	var->name = ft_strdup("PWD");
+	if (!var->name)
+		return (free(var), EXIT_FAILURE);
+	var->value = ft_strdup(pwd);
+	if (!var->value)
+		return (free(var->name), free(var), EXIT_FAILURE);
+	return (ft_export_var(2, en, var));
+}
 
 int	ft_print_secret(t_list *en)
 {
@@ -54,12 +100,10 @@ void	ft_envinit(t_list **en, char **envp)
 	t_list		*new_node;
 	t_globvar	*var;
 
-	i = 0;
+	i = -1;
 	var = NULL;
 	new_node = NULL;
-	if (!envp)
-		exit_error("Error: Init failed.\n", en, var, EXIT_FAILURE);
-	while (envp[i])
+	while (envp && envp[++i])
 	{
 		var = malloc(sizeof(t_globvar));
 		if (!var)
@@ -71,6 +115,9 @@ void	ft_envinit(t_list **en, char **envp)
 		if (!new_node)
 			exit_error("Error: Init failed.\n", en, var, EXIT_FAILURE);
 		ft_lstadd_back(en, new_node);
-		++i;
 	}
+	if (ft_initshlvl(*en))
+		exit_error("Error: Init failed.\n", en, NULL, EXIT_FAILURE);
+	if (ft_initpwd(*en))
+		exit_error("Error: Init failed.\n", en, NULL, EXIT_FAILURE);
 }

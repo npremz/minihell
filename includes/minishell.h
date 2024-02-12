@@ -6,7 +6,7 @@
 /*   By: npremont <npremont@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/06 10:52:04 by npremont          #+#    #+#             */
-/*   Updated: 2024/02/10 11:47:44 by npremont         ###   ########.fr       */
+/*   Updated: 2024/02/12 10:49:24 by npremont         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,7 @@ char	**ft_en_to_tab(t_list *en);
 void	ft_print_export(char **en);
 char	*ft_get_varname(char *varline);
 char	*ft_get_varvalue(char *varline);
+char	*ft_get_gvar_value(char *str, t_list *en);
 
 /* FREE UTILS */
 

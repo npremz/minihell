@@ -6,7 +6,7 @@
 /*   By: npremont <npremont@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/06 14:05:06 by npremont          #+#    #+#             */
-/*   Updated: 2024/02/07 17:06:42 by npremont         ###   ########.fr       */
+/*   Updated: 2024/02/12 10:50:57 by npremont         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ int	update_env(t_list *en, char act_pwd[1024])
 	return (EXIT_SUCCESS);
 }
 
-char	*ft_get_var_value(char *str, t_list *en)
+char	*ft_get_gvar_value(char *str, t_list *en)
 {
 	t_globvar	*var;
 
@@ -59,7 +59,7 @@ int	ft_go_to_path(char *str, t_list *en, char act_pwd[1024])
 {
 	char	*path;
 
-	path = ft_get_var_value(str, en);
+	path = ft_get_gvar_value(str, en);
 	if (!path)
 		return (print_error("cd: « "), print_error(str),
 			print_error(" » not set.\n"), EXIT_FAILURE);
@@ -80,7 +80,7 @@ int	ft_tilde(t_list *en, char *str, char act_pwd[1024])
 	char	*dest;
 	char	*home;
 
-	home = ft_get_var_value("HOME", en);
+	home = ft_get_gvar_value("HOME", en);
 	if (!home)
 		home = getenv("HOME");
 	dest = ft_strjoin(home, str + 1);
